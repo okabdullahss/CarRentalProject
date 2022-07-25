@@ -3,6 +3,7 @@ package com.carrental.dto.mapper;
 import com.carrental.domain.Role;
 import com.carrental.domain.User;
 import com.carrental.dto.UserDTO;
+import com.carrental.dto.request.AdminUserUpdateRequest;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-07-22T19:04:40+0300",
+    date = "2022-07-25T15:19:32+0300",
     comments = "version: 1.4.2.Final, compiler: Eclipse JDT (IDE) 1.4.50.v20210914-1429, environment: Java 18.0.1.1 (Oracle Corporation)"
 )
 @Component
@@ -54,5 +55,25 @@ public class UserMapperImpl implements UserMapper {
         }
 
         return list;
+    }
+
+    @Override
+    public User adminUserUpdateRequestToUser(AdminUserUpdateRequest request) {
+        if ( request == null ) {
+            return null;
+        }
+
+        User user = new User();
+
+        user.setAddress( request.getAddress() );
+        user.setBuiltIn( request.getBuiltIn() );
+        user.setEmail( request.getEmail() );
+        user.setFirstName( request.getFirstName() );
+        user.setLastName( request.getLastName() );
+        user.setPassword( request.getPassword() );
+        user.setPhoneNumber( request.getPhoneNumber() );
+        user.setZipCode( request.getZipCode() );
+
+        return user;
     }
 }

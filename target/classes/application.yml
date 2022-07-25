@@ -21,6 +21,13 @@ spring:
     hibernate: 
      ddl-auto: update
      
+  servlet: 
+    multipart:
+      max-file-size: 2MB    #imagefiles must be 2MB size maximum
+      max-request-size: 2MB
+         
+   
+   
 carrental:
    app:
     jwtSecret: carrental@1234

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.carrental.dto.UserDTO;
+import com.carrental.dto.request.AdminUserUpdateRequest;
 import com.carrental.dto.request.UpdatePasswordRequest;
 import com.carrental.dto.request.UserUpdateRequest;
 import com.carrental.dto.response.CRResponse;
@@ -140,8 +141,20 @@ public class UserController {
 
 		}
 	
-	
-	
-
+	//------------------------- UPDATE A USER BY ADMIN METHOD -------------------------------------------------------------
+		@PutMapping("/{id}/auth")
+		@PreAuthorize("hasRole('ADMIN')")
+		public ResponseEntity<CRResponse> updateUserAuth(@PathVariable Long id, @Valid
+														 @RequestBody AdminUserUpdateRequest adminUserUpdateRequest){
+		
+			userService.updateUserAuth(id, adminUserUpdateRequest);
+			CRResponse response = new CRResponse();
+			response.setMessage(ResponseMessage.UPDATE_RESPONSE_MESSAGE);
+			response.setSuccess(true);
+			
+			return ResponseEntity.ok(response);
+		
+		
+		}
 	
 }

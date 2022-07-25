@@ -22,6 +22,7 @@ import com.carrental.domain.User;
 import com.carrental.domain.enums.RoleType;
 import com.carrental.dto.UserDTO;
 import com.carrental.dto.mapper.UserMapper;
+import com.carrental.dto.request.AdminUserUpdateRequest;
 import com.carrental.dto.request.RegisterRequest;
 import com.carrental.dto.request.UserUpdateRequest;
 import com.carrental.dto.response.CRResponse;
@@ -172,6 +173,87 @@ public class UserService {
 		userRepository.deleteById(id);
 		
 	}
+	
+	//------------------------- UPDATE A USER BY ADMIN METHOD -------------------------------------------------------------
+	
+	public void updateUserAuth(Long id, AdminUserUpdateRequest adminUserUpdateRequest) {
+		
+		//check if the email exists
+		boolean existsByEmail = userRepository.existsByEmail(adminUserUpdateRequest.getEmail());
+		
+		//check if the user exists
+		User user = userRepository.findById(id).
+				orElseThrow(()-> new ResourceNotFoundException(String.format(ErrorMessage.RESOURCE_NOT_FOUND_MESSAGE, id)));
+		
+		//check if the user is builtIn or not
+		if(user.getBuiltIn()) {
+			throw new BadRequestException(ErrorMessage.NOT_PERMITTED_METHOD_MESSAGE);
+		}
+		
+		//dont allow to use email that already exists
+		if (existsByEmail && !adminUserUpdateRequest.getEmail().equals(user.getEmail())) {
+			throw new ConflictException(String.format(ErrorMessage.EMAIL_ALREADY_EXISTS, user.getEmail()));
+		}
+		
+		//if new request does not include new password(forgotten), set the old password as new one
+		if(adminUserUpdateRequest.getPassword()==null) {
+			
+			String encodedPassword = passwordEncoder.encode(adminUserUpdateRequest.getPassword());
+			adminUserUpdateRequest.setPassword(encodedPassword);
+		} else {
+			String encodedPassowrd =passwordEncoder.encode(adminUserUpdateRequest.getPassword());
+			adminUserUpdateRequest.setPassword(encodedPassowrd);
+		}
+		
+		//convert "String type roles" into  "Role type entities"
+		Set<String> userStrRoles = adminUserUpdateRequest.getRoles();
+		Set<Role> roles = convertRoles(userStrRoles);
+		
+		User updateUser = userMapper.adminUserUpdateRequestToUser(adminUserUpdateRequest);
+		
+		updateUser.setId(user.getId()); // during DTO convertion, we had ignored both id and roles,
+		updateUser.setRoles(roles); // now we setting(updating) the id and the roles
+		
+		userRepository.save(updateUser); 
+		
+	}
+	
+	public Set<Role> convertRoles(Set<String> pRoles){
+		Set<Role> roles = new HashSet<>();
+		
+		if(pRoles == null) {
+			Role userRole = roleRepository.findByName(RoleType.ROLE_CUSTOMER)
+			.orElseThrow(
+			()-> new ResourceNotFoundException(String.format(ErrorMessage.ROLE_NOT_FOUND_MESSAGE, RoleType.ROLE_CUSTOMER.name())));
+			
+			 roles.add(userRole);
+		}else {
+			pRoles.forEach(role-> {
+				switch(role) {
+				case "Administrator":
+					Role adminRole = roleRepository.findByName(RoleType.ROLE_ADMIN)
+					.orElseThrow(() -> new ResourceNotFoundException(
+							String.format(ErrorMessage.ROLE_NOT_FOUND_MESSAGE, RoleType.ROLE_ADMIN.name())));
+
+			roles.add(adminRole);
+			break;
+			
+			default: 
+				
+				Role userRole = roleRepository.findByName(RoleType.ROLE_CUSTOMER)
+				.orElseThrow(() -> new ResourceNotFoundException(
+						String.format(ErrorMessage.ROLE_NOT_FOUND_MESSAGE, RoleType.ROLE_CUSTOMER.name())));
+
+		        roles.add(userRole);
+				
+				}
+			});
+		}
+		
+		return roles;
+	}
+	
+	
 	
 	
 }

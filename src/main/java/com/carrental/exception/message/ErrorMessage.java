@@ -14,4 +14,6 @@ public class ErrorMessage {
 	public final static String NOT_PERMITTED_METHOD_MESSAGE="You dont have any permission to change this values";
 	
 	public final static String PASSWORD_NOT_MATCHED="Your passwords are not matched";
+	
+	public final static String IMAGE_NOT_FOUND_MESSAGE="ImageFile with id %s not found";
 }
