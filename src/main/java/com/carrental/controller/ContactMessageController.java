@@ -13,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +61,7 @@ public class ContactMessageController {
 //------------------------GET A CONTACT MESSAGE WITH AN ID / PATHVARIABLE ----------------------------------------------
 	
 	@GetMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ContactMessage> getContactMessageWithIdPathVar(@PathVariable("id") Long id){
 		
 		ContactMessage contactMessageWithId = contactMessageService.getContactMessageWithId(id);
@@ -71,6 +73,7 @@ public class ContactMessageController {
 //------------------------GET A CONTACT MESSAGE WITH AN ID /REQUESTPARAM ----------------------------------------------	
 	
 	@GetMapping("/request")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<ContactMessage> getContactMessageWithIdReqParam(@RequestParam("id") Long id){
 		
 		ContactMessage contactMessageWithId = contactMessageService.getContactMessageWithId(id);
@@ -82,6 +85,7 @@ public class ContactMessageController {
 //------------------------UPDATE A CONTACT MESSAGE WITH AN ID ----------------------------------------------
 	
 	@PutMapping("/{id}")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Map<String,String>> updateContactMessage(@PathVariable("id") Long id, @Valid @RequestBody ContactMessage message){
 		
 		contactMessageService.updateContactMessage(message, id);
@@ -97,6 +101,7 @@ public class ContactMessageController {
 //------------------------DELETE A CONTACT MESSAGE WITH AN ID ----------------------------------------------	
 	
 	@DeleteMapping("/{id}")
+	 @PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Map<String,String>> deleteContactMessage(@PathVariable("id") Long id){
 		
 		contactMessageService.deleteContactMessageWithId(id);
@@ -111,6 +116,7 @@ public class ContactMessageController {
 //------------------------GET ALL CONTACT MESSAGES WITH PAGES ----------------------------------------------	
 	
 	@GetMapping("/pages")
+	@PreAuthorize("hasRole('ADMIN')")
 	public ResponseEntity<Page<ContactMessage>> getAllMessagesWithPage(@RequestParam("page") int page, @RequestParam("size") int size,
 																	   @RequestParam("sort") String prop, @RequestParam("direction") Direction direction){
 		

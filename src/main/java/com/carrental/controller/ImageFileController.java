@@ -1,5 +1,7 @@
 package com.carrental.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.carrental.domain.ImageFile;
+import com.carrental.dto.ImageFileDTO;
 import com.carrental.dto.response.ImageSavedResponse;
 import com.carrental.dto.response.ResponseMessage;
 import com.carrental.service.ImageFileService;
@@ -74,4 +77,18 @@ public class ImageFileController {
 	    	return new ResponseEntity<>(imageFile.getData(),header,HttpStatus.OK);
 	    	
 	    }
+	  
+	//-----------------------DOWNLOAD ALL CAR IMAGES ------------------------------------------------------------
+	  
+	  @GetMapping
+	  @PreAuthorize("hasRole('ADMIN')")
+	  public ResponseEntity<List<ImageFileDTO>> getAllImages(){
+		  
+		  List<ImageFileDTO> imageList = imageFileService.getAllImages();
+		  
+		  return ResponseEntity.ok(imageList);
+	  }
+	  
+	  
+	  
 }
