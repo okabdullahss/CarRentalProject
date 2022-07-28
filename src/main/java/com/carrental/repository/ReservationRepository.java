@@ -2,6 +2,7 @@ package com.carrental.repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,12 +13,19 @@ import com.carrental.domain.Car;
 import com.carrental.domain.Reservation;
 import com.carrental.domain.User;
 import com.carrental.domain.enums.ReservationStatus;
+import com.carrental.dto.ReservationDTO;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 
+	List<ReservationDTO> findAllBy();
+	
+	Optional<ReservationDTO> findDTOById(Long id);
+	
 	boolean existsByCarId(Car car);
 	boolean existsByUserId(User user);
+	
+	List<ReservationDTO> findAllByUserId(User userId);
 	
 	//custom query for checkCarAvailability method in ReservationService.class
 	@Query("SELECT r FROM Reservation r "

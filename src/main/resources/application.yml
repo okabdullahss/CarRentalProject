@@ -1,11 +1,13 @@
 
 
 server: 
+  port: 8080
   error:
     include-message: always
     include-binding-errors: always
     include-stacktrace: never
-    
+ # servlet:       #optional context-path for api endpoints
+ #  context-path:   
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/carrental2_db
