@@ -114,6 +114,9 @@ public class CarService {
 		
 		
 		boolean exists = reservationRepository.existsByCarId(car);
+		
+		//this part ensures to return more readable error message to the user, in stead of INTERNAL SERVER ERROR
+		//wheh we try to use pre-flight methods and have CORST interception in browser
 		if(exists) {
 			throw new BadRequestException(ErrorMessage.CAR_USED_BY_RESERVATION_MESSAGE);
 		}

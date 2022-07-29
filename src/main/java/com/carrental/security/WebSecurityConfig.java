@@ -2,10 +2,12 @@ package com.carrental.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,6 +33,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		 
 		http.csrf().disable().
 		sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().
+		
+		authorizeRequests().antMatchers(HttpMethod.OPTIONS,"/**").permitAll().and(). //CORS-PREFLIGHT (PUT/DELETE/PATCH METHODS) ALLOW
+		
 		authorizeRequests().antMatchers("/login","/register","/files/download/**","/files/display/**",
 				"/contactmessage/visitors","/car/visitors/**").permitAll().
 		anyRequest().authenticated();
@@ -40,6 +45,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		
 	}
 	
+	//------------------------------SWAGGER DOCUMENTATION NECESSARY CONFIGS------------------------------------------
+		public static final String[] AUTH_WHITE_LIST= {
+				"/v3/api-docs/**",
+				"swagger-ui.html",
+				"/swagger-ui/**",
+				"/",
+				"index.html",
+				"/images/**"
+				
+		//SWAGGER LOCAL SITE  = http://localhost:8080/swagger-ui/index.html" 
+		};
+		
+		@Override //DO NOT FILTER THE SITE WITHIN THE WHITE LIST
+		public void configure(WebSecurity web) throws Exception {
+			 web.ignoring().antMatchers(AUTH_WHITE_LIST);
+		}
+	//-------------------------------------------------------------------------------------------------------------
 	@Bean
 	public AuthTokenFilter authJwtTokenFilter() {
 		return new AuthTokenFilter();

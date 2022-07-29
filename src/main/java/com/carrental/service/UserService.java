@@ -30,6 +30,7 @@ import com.carrental.exception.BadRequestException;
 import com.carrental.exception.ConflictException;
 import com.carrental.exception.ResourceNotFoundException;
 import com.carrental.exception.message.ErrorMessage;
+import com.carrental.repository.ReservationRepository;
 import com.carrental.repository.RoleRepository;
 import com.carrental.repository.UserRepository;
 
@@ -46,6 +47,7 @@ public class UserService {
 	private RoleRepository roleRepository;
 	private PasswordEncoder passwordEncoder;
 	private UserMapper userMapper;
+	private ReservationRepository reservationRepository;
 	
 //------------------------- REGISTER  METHOD  -------------------------------------------------------------	
 	
@@ -167,6 +169,12 @@ public class UserService {
 		User user=userRepository.findById(id).orElseThrow(
 				() -> new ResourceNotFoundException(String.format(ErrorMessage.RESOURCE_NOT_FOUND_MESSAGE, id)));
 		
+		//this part ensures to return more readable error message to the user, in stead of INTERNAL SERVER ERROR
+		//wheh we try to use pre-flight methods and have CORST interception in browser
+		 boolean exists = reservationRepository.existsByUserId(user);
+        if(exists) {
+            throw new BadRequestException(ErrorMessage.USER_USED_BY_RESERVATION_MESSAGE);
+        }
 		if (user.getBuiltIn()) {
 			throw new BadRequestException(ErrorMessage.NOT_PERMITTED_METHOD_MESSAGE);
 		}

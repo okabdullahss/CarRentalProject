@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-07-28T18:37:01+0300",
+    date = "2022-07-29T16:26:06+0300",
     comments = "version: 1.4.2.Final, compiler: Eclipse JDT (IDE) 1.4.50.v20210914-1429, environment: Java 18.0.1.1 (Oracle Corporation)"
 )
 @Component
@@ -34,11 +34,11 @@ public class UserMapperImpl implements UserMapper {
         userDTO.setId( user.getId() );
         userDTO.setLastName( user.getLastName() );
         userDTO.setPhoneNumber( user.getPhoneNumber() );
+        userDTO.setZipCode( user.getZipCode() );
         Set<Role> set = user.getRoles();
         if ( set != null ) {
             userDTO.setRoles( new HashSet<Role>( set ) );
         }
-        userDTO.setZipCode( user.getZipCode() );
 
         return userDTO;
     }

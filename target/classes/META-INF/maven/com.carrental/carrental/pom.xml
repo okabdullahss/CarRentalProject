@@ -19,6 +19,8 @@
 		<mapstruct.version>1.4.2.Final</mapstruct.version>
 		<lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
 		<lombok.version>1.18.24</lombok.version>
+		<apache.poi.version>4.1.0</apache.poi.version>
+		<springdoc.openapi.version>1.6.9</springdoc.openapi.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -65,6 +67,19 @@
 		<artifactId>spring-security-test</artifactId>
 		<scope>test</scope>
 		</dependency>
+		
+		<dependency> <!--  SWAGGER DOCUMENTATION DEPENDENCY -->
+          <groupId>org.springdoc</groupId>
+          <artifactId>springdoc-openapi-ui</artifactId>
+          <version>${springdoc.openapi.version}</version>
+        </dependency>
+		
+		<dependency> 
+		<!-- Dependency for excel report provider in ReportService.class -->
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${apache.poi.version}</version>
+        </dependency>
 		
 		<dependency>
 		<groupId>io.jsonwebtoken</groupId>

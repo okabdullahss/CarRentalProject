@@ -22,8 +22,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
 	
 	Optional<ReservationDTO> findDTOById(Long id);
 	
-	boolean existsByCarId(Car car);
-	boolean existsByUserId(User user);
+	boolean existsByCarId(Car car);  // for CORS / pre-flight method errors
+	boolean existsByUserId(User user); // for CORS / pre-flight method errors
 	
 	List<ReservationDTO> findAllByUserId(User userId);
 	
@@ -37,5 +37,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long>{
             + "cd.id=:carId and (r.status not in :status) and (r.pickUpTime BETWEEN :pickUpTime and :dropOffTime)")
 	List<Reservation> checkCarStatus(@Param("carId") Long carId, @Param("pickUpTime") LocalDateTime pickUptime,
 									 @Param("dropOffTime") LocalDateTime dropOffTime, @Param("status") ReservationStatus[] status);
+	
+	//we can add custom query if needed
+	Optional<ReservationDTO> findByIdAndUserId(Long id,User user);
 	
 }

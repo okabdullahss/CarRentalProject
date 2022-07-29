@@ -2,6 +2,7 @@ package com.carrental.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -166,5 +167,34 @@ public class ReservationService {
 			
 			return car.getPricePerHour()*hours;
 		}
-	
+		
+		//--------------------- delete a reservation  ---------------------------------------------------------
+		
+		public void removeById(Long id) {
+			
+			boolean exist=reservationRepository.existsById(id);
+		      
+			
+		      if(!exist) {
+		          throw new ResourceNotFoundException(String.format(ErrorMessage.RESOURCE_NOT_FOUND_MESSAGE, id));
+		      }
+		      
+		      reservationRepository.deleteById(id);
+		      
+		    }
+			
+		//--------------------------------------display a reservation of its own(user or admin) ------------------
+		@Transactional(readOnly = true)
+		public ReservationDTO findByIdAndUserId(Long id, Long userId) {
+			
+			User user = userRepository.findById(userId).orElseThrow(()->
+	        new ResourceNotFoundException(String.format(ErrorMessage.RESOURCE_NOT_FOUND_MESSAGE, userId)));
+			
+			return reservationRepository.findByIdAndUserId(id, user).orElseThrow(()->new 
+	                 ResourceNotFoundException(String.format(ErrorMessage.RESOURCE_NOT_FOUND_MESSAGE,id)));
+						
+		}
+		
+		
+		
 }

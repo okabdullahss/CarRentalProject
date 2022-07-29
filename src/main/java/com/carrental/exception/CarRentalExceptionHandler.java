@@ -3,6 +3,7 @@ package com.carrental.exception;
 import java.nio.file.AccessDeniedException;
 
 import javax.naming.AuthenticationException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,13 @@ public class CarRentalExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(error);				
 	}
 	
+	@ExceptionHandler(ExcelReportException.class)
+	protected ResponseEntity<Object> handleExcelReportException(ExcelReportException ex, WebRequest request){
+		ApiResponseError error = new ApiResponseError(HttpStatus.BAD_REQUEST,ex.getMessage(),request.getDescription(false));
+		
+		return buildResponseEntity(error);				
+	}
+	
 	@ExceptionHandler(ImageFileException.class)
 	protected ResponseEntity<Object> handleImageFileException(ImageFileException ex, WebRequest request){
 		ApiResponseError error = new ApiResponseError(HttpStatus.BAD_REQUEST,ex.getMessage(),request.getDescription(false));
@@ -72,11 +80,19 @@ public class CarRentalExceptionHandler extends ResponseEntityExceptionHandler {
 		return buildResponseEntity(error);				
 	}
 	
+	//we handled all our exceptions in this project. this is just in case when we have a general exception
 	@ExceptionHandler(RuntimeException.class)
 	protected ResponseEntity<Object> handleGeneralException(RuntimeException ex, WebRequest request){
 		ApiResponseError error = new ApiResponseError(HttpStatus.INTERNAL_SERVER_ERROR,ex.getMessage(),request.getDescription(false));
 		
 		return buildResponseEntity(error);				
+	}
+	
+	//this is just in case when we have a general CHECKED exception
+	@ExceptionHandler(Exception.class)
+	protected ResponseEntity<Object> handleException(Exception ex,HttpServletRequest request){
+      		ApiResponseError error=new ApiResponseError(HttpStatus.INTERNAL_SERVER_ERROR,ex.getMessage(),request.getServletPath());
+      		return buildResponseEntity(error);
 	}
 	
 	
