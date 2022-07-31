@@ -22,7 +22,20 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate: 
      ddl-auto: update
+    properties:
+      format-sql: true
+      #hibernate: 
+       #enable_lazy_load_no_trans: true  this code makes all the fetch types act like EAGER even if you forget and set them to LAZY
+       
      
+     
+     
+  #  open-in-view: false #spring.jpa.open-in-view is enabled by default.Therefore, database queries may be performed during view rendering. 
+                         #As you can see from the warning above, open-in-view brings all the information until the view is rendered
+                 # even if fetch type is lazy,it comes enabled as default in spring. we can disable it here by simply typing "false"
+    
+    
+    
   servlet: 
     multipart:
       max-file-size: 2MB    #imagefiles must be 2MB size maximum
@@ -46,6 +59,11 @@ logging:
    '[org.springframework.web]': INFO
    '[org.hibernate]': INFO
    '[com.greenrent]': DEBUG
-     
+   
+ info:  
+  application:
+   name: 'CarRental Backend App.'
+   description: 'This is Car Rental Backend app dev by Abdullah OK'
+   version: '@project.version@'   
      
  

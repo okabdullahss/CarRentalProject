@@ -1,0 +1,9 @@
+
+management:
+ endpoints:
+  web: 
+   exposure:
+    include: ['info','health']
+ info:
+  env:
+   enabled: true

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-07-29T16:26:06+0300",
-    comments = "version: 1.4.2.Final, compiler: Eclipse JDT (IDE) 1.4.50.v20210914-1429, environment: Java 18.0.1.1 (Oracle Corporation)"
+    date = "2022-07-31T12:55:32+0300",
+    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 18.0.1.1 (Oracle Corporation)"
 )
 @Component
 public class UserMapperImpl implements UserMapper {
@@ -27,18 +27,18 @@ public class UserMapperImpl implements UserMapper {
 
         UserDTO userDTO = new UserDTO();
 
-        userDTO.setAddress( user.getAddress() );
-        userDTO.setBuiltIn( user.getBuiltIn() );
-        userDTO.setEmail( user.getEmail() );
-        userDTO.setFirstName( user.getFirstName() );
-        userDTO.setId( user.getId() );
-        userDTO.setLastName( user.getLastName() );
-        userDTO.setPhoneNumber( user.getPhoneNumber() );
-        userDTO.setZipCode( user.getZipCode() );
         Set<Role> set = user.getRoles();
         if ( set != null ) {
             userDTO.setRoles( new HashSet<Role>( set ) );
         }
+        userDTO.setId( user.getId() );
+        userDTO.setFirstName( user.getFirstName() );
+        userDTO.setLastName( user.getLastName() );
+        userDTO.setEmail( user.getEmail() );
+        userDTO.setPhoneNumber( user.getPhoneNumber() );
+        userDTO.setAddress( user.getAddress() );
+        userDTO.setZipCode( user.getZipCode() );
+        userDTO.setBuiltIn( user.getBuiltIn() );
 
         return userDTO;
     }
@@ -65,14 +65,14 @@ public class UserMapperImpl implements UserMapper {
 
         User user = new User();
 
-        user.setAddress( request.getAddress() );
-        user.setBuiltIn( request.getBuiltIn() );
-        user.setEmail( request.getEmail() );
         user.setFirstName( request.getFirstName() );
         user.setLastName( request.getLastName() );
+        user.setEmail( request.getEmail() );
         user.setPassword( request.getPassword() );
         user.setPhoneNumber( request.getPhoneNumber() );
+        user.setAddress( request.getAddress() );
         user.setZipCode( request.getZipCode() );
+        user.setBuiltIn( request.getBuiltIn() );
 
         return user;
     }

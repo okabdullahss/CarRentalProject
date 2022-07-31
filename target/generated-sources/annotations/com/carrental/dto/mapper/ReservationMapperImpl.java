@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2022-07-29T16:26:06+0300",
-    comments = "version: 1.4.2.Final, compiler: Eclipse JDT (IDE) 1.4.50.v20210914-1429, environment: Java 18.0.1.1 (Oracle Corporation)"
+    date = "2022-07-31T12:55:32+0300",
+    comments = "version: 1.4.2.Final, compiler: javac, environment: Java 18.0.1.1 (Oracle Corporation)"
 )
 @Component
 public class ReservationMapperImpl implements ReservationMapper {
@@ -21,10 +21,10 @@ public class ReservationMapperImpl implements ReservationMapper {
 
         Reservation reservation = new Reservation();
 
-        reservation.setDropOffLocation( reservationRequest.getDropOffLocation() );
+        reservation.setPickUpTime( reservationRequest.getPickUpTime() );
         reservation.setDropOffTime( reservationRequest.getDropOffTime() );
         reservation.setPickUpLocation( reservationRequest.getPickUpLocation() );
-        reservation.setPickUpTime( reservationRequest.getPickUpTime() );
+        reservation.setDropOffLocation( reservationRequest.getDropOffLocation() );
 
         return reservation;
     }
